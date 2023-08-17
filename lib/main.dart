@@ -92,16 +92,32 @@ class DetailsPage extends StatelessWidget {
           flightDirection, 
           fromHeroContext, 
           toHeroContext) {
-            return const Text('🔥');
+            switch(flightDirection){
+              case HeroFlightDirection.push:
+              return Material(
+                color: Colors.transparent,
+                child: ScaleTransition(
+                  scale: animation.drive(
+                    Tween<double>(
+                      begin: 0.0,
+                      end: 10.0
+                    ).chain(
+                      CurveTween(curve: Curves.fastOutSlowIn)
+                    )
+                  ),
+                  child: toHeroContext.widget),);
+              case HeroFlightDirection.pop:
+              return Material(
+                  color: Colors.transparent,
+                  child: fromHeroContext.widget);
+            }
+            // return const Text('🔥');
           },
           tag: person.name,
-          child: Material(
-            color: Colors.transparent,
-            child: Text(
-              person.emoji,
-              textAlign: TextAlign.center,
-              style:const TextStyle(fontSize: 50),
-            ),
+          child: Text(
+            person.emoji,
+            textAlign: TextAlign.center,
+            style:const TextStyle(fontSize: 50),
           )),
 
       ),
