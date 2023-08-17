@@ -47,19 +47,74 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("People"),
+        centerTitle: true,
+        title: const Text("People",textAlign: TextAlign.center,),
       ),
       body: ListView.builder(
         itemCount: people.length,
         itemBuilder: (context,index){
           final person = people[index];
           return ListTile(
-            leading: Text(person.emoji,style: TextStyle(fontSize: 40),),
+            onTap: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context)=>DetailsPage(person: person))
+              );
+            },
+            leading: Hero(
+              tag: person.name,
+              child: Text(
+                person.emoji,
+                style: TextStyle(fontSize: 40),
+              ),
+            ),
             title: Text(person.name),
             subtitle: Text("${person.age} Years old"),
-
+            trailing: const Icon(Icons.arrow_forward_ios),
           );
         }),
+    );
+  }
+}
+
+class DetailsPage extends StatelessWidget {
+  final Person person;
+  const DetailsPage({super.key, required this.person});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Hero(
+          flightShuttleBuilder: (
+          flightContext, 
+          animation,
+          flightDirection, 
+          fromHeroContext, 
+          toHeroContext) {
+            return const Text('🔥');
+          },
+          tag: person.name,
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              person.emoji,
+              textAlign: TextAlign.center,
+              style:const TextStyle(fontSize: 50),
+            ),
+          )),
+
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(height: 20,),
+            Text(person.name,style: const TextStyle(fontSize: 20),),
+            const SizedBox(height: 20,),
+            Text("${person.age} Years old",style: const TextStyle(fontSize: 20),),
+          ],
+        ),
+      ),
     );
   }
 }
